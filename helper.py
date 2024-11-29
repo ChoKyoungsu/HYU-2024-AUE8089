@@ -69,3 +69,10 @@ def corner_detection(im, sigma=1.5):
 	result_img = skimage.feature.corner_fast(im, PATCHWIDTH)
 	locs = skimage.feature.corner_peaks(result_img, min_distance=1)
 	return locs
+
+def blend_images(img1, img2, mask):
+    mask = np.dstack([mask] * 3)
+    blurred_mask = cv2.GaussianBlur(mask, (21, 21), 0)
+    blended = img1 * (1 - blurred_mask) + img2 * blurred_mask
+    return blended.astype(np.uint8)
+
